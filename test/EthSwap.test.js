@@ -14,7 +14,7 @@ contract("EthSwap", ([deployer, investor]) => {
 
   before(async () => {
     token = await Token.new();
-    ethSwap = await EthSwap.new(token.address, ether.address);
+    ethSwap = await EthSwap.new(token.address);
 
     // Transfer all tokens to EthSwap (1 million)
     await token.transfer(ethSwap.address, tokens("1000"));
@@ -24,13 +24,6 @@ contract("EthSwap", ([deployer, investor]) => {
     it("contract has a name", async () => {
       const name = await token.name();
       assert.equal(name, "DApp Token");
-    });
-  });
-
-  describe("Ether deployment", async () => {
-    it("contract has a name", async () => {
-      const name = await ether.name();
-      assert.equal(name, "Ether");
     });
   });
 
@@ -76,7 +69,7 @@ contract("EthSwap", ([deployer, investor]) => {
       assert.equal(event.token, token.address);
       assert.equal(event.amount.toString(), tokens("100").toString());
       assert.equal(event.rate.toString(), "100");
-      assert.equal(event.totalEth.toString(), tokens("999").toString());
+      assert.equal(event.totalEth.toString(), tokens("1001").toString());
     });
   });
 
