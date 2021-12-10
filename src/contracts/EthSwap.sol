@@ -6,12 +6,15 @@ contract EthSwap {
   string public name = "EthSwap Instant Exchange";
   Token public token;
   uint public rate = 100;
+  uint public totalEth = 1000000000000000000000;
+  uint constant public k = 1000000000000000000000 ** 2;
 
   event TokensPurchased(
     address account,
     address token,
     uint amount,
-    uint rate
+    uint rate,
+    uint totalEth
   );
 
   event TokensSold(
@@ -35,8 +38,11 @@ contract EthSwap {
     // Transfer tokens to the user
     token.transfer(msg.sender, tokenAmount);
 
+    // Increase ethereum amount from liquidity pool
+    totalEth += msg.value;
+    
     // Emit an event
-    emit TokensPurchased(msg.sender, address(token), tokenAmount, rate);
+    emit TokensPurchased(msg.sender, address(token), tokenAmount, rate, totalEth);
   }
 
   function sellTokens(uint _amount) public {
@@ -52,6 +58,9 @@ contract EthSwap {
     // Perform sale
     token.transferFrom(msg.sender, address(this), _amount);
     msg.sender.transfer(etherAmount);
+
+     // Decrease ethereum amount from liquidity pool
+    totalEth -= etherAmount;
 
     // Emit an event
     emit TokensSold(msg.sender, address(token), _amount, rate);
