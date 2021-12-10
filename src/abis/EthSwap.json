@@ -4258,12 +4258,13 @@
         }
       },
       "links": {},
-      "address": "0x4f52a0a4d4b7D84bFB4777907f513DDABf297AF8",
-      "transactionHash": "0xcd7552683868d1b23a49d4d74323859f14b139060de77f4052f7bc6d1320826a"
+      "address": "0xcc1785EE46bbAD3eA437Ff3fdE0c565Ea3A00e45",
+      "transactionHash": "0xb1b66dea699bbbfb8782b8ea0bc775eea982e9cd8b0949af28c9e94de787f2f9"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-12-10T20:31:52.363Z",
+  "updatedAt": "2021-12-10T21:29:34.431Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {}
   },
