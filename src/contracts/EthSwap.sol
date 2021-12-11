@@ -5,7 +5,7 @@ import "./Token.sol";
 contract EthSwap {
   string public name = "EthSwap Instant Exchange";
   Token public token;
-  uint public rate = 100;
+  uint public rate;
   uint public totalEth = 1000000000000000000000;
   uint constant public k = 1000000000000000000000 ** 2;
 
@@ -29,20 +29,24 @@ contract EthSwap {
   }
 
   function buyTokens() public payable {
-    // Calculate the number of tokens to buy
-    uint tokenAmount = msg.value * rate;
-
-    // Require that EthSwap has enough tokens
-    require(token.balanceOf(address(this)) >= tokenAmount);
-
-    // Transfer tokens to the user
-    token.transfer(msg.sender, tokenAmount);
-
     // Increase ethereum amount from liquidity pool
     totalEth += msg.value;
+
+    // Calculate the number of tokens to buy
+    // uint tokenAmount = msg.value * rate;
+    uint tokenToRemain = k / totalEth;
+    uint tokenToGive = token.balanceOf(address(this)) - tokenToRemain;
+
+    // Require that EthSwap has enough tokens
+    // require(token.balanceOf(address(this)) >= tokenAmount);
+    require(token.balanceOf(address(this)) >= tokenToGive);
+
+    // Transfer tokens to the user
+    token.transfer(msg.sender, tokenToGive);
+
     
     // Emit an event
-    emit TokensPurchased(msg.sender, address(token), tokenAmount, rate, totalEth);
+    emit TokensPurchased(msg.sender, address(token), tokenToGive, rate, totalEth);
   }
 
   function sellTokens(uint _amount) public {

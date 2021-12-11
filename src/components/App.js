@@ -94,6 +94,7 @@ class App extends Component {
       ethBalance: "0",
       tokenBalance: "0",
       loading: true,
+      tokenToGive: 0,
     };
   }
 
