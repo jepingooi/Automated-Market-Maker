@@ -10,11 +10,6 @@ class Main extends Component {
     };
   }
 
-  // Error modal
-  renderModal = () => {
-    return "";
-  };
-
   render() {
     let content;
     if (this.state.currentForm === "buy") {
