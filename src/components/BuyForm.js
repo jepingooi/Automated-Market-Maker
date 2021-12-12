@@ -37,6 +37,11 @@ class BuyForm extends Component {
     return parseFloat(balance).toFixed(4);
   };
 
+  isNumeric = (str) => {
+    if (typeof str != "string") return false;
+    return !isNaN(str) && !isNaN(parseFloat(str));
+  };
+
   render() {
     return (
       <form
@@ -64,12 +69,27 @@ class BuyForm extends Component {
               // const etherAmount = this.input.value.toString();
               let etherAmount;
               etherAmount = this.input.value.toString();
-              if (etherAmount !== "") {
+              if (etherAmount > parseFloat(this.getEthBalance())) {
+                this.input.value = "";
+                window.alert(
+                  `Input cannot exceed your account balance! (${this.getEthBalance()})`
+                );
+              } else if (
+                etherAmount !== "" &&
+                this.isNumeric(etherAmount) !== false
+              ) {
                 etherAmount = window.web3.utils.toWei(etherAmount, "Ether");
+                this.getTokenAmount(etherAmount);
+              } else if (
+                etherAmount !== "" &&
+                this.isNumeric(etherAmount) === false
+              ) {
+                this.input.value = "";
+                window.alert("Only numeric values are allowed!");
               } else {
                 etherAmount = 0;
+                this.getTokenAmount(etherAmount);
               }
-              this.getTokenAmount(etherAmount);
             }}
             ref={(input) => {
               this.input = input;
