@@ -27,11 +27,13 @@ class BuyForm extends Component {
     });
   };
 
+  // Get user's token balance
   getTokenBalance = () => {
     const balance = window.web3.utils.fromWei(this.props.tokenBalance, "Ether");
     return parseFloat(balance).toFixed(4);
   };
 
+  // Get user's eth balance
   getEthBalance = () => {
     const balance = window.web3.utils.fromWei(this.props.ethBalance, "Ether");
     return parseFloat(balance).toFixed(4);
@@ -72,8 +74,10 @@ class BuyForm extends Component {
               // const etherAmount = this.input.value.toString();
               let etherAmount;
               etherAmount = this.input.value.toString();
+
               if (etherAmount > parseFloat(this.getEthBalance())) {
                 this.input.value = "";
+                this.setState({ output: 0 });
                 window.alert(
                   `Input cannot exceed your account balance! (${this.getEthBalance()})`
                 );
@@ -88,6 +92,7 @@ class BuyForm extends Component {
                 this.isNumeric(etherAmount) === false
               ) {
                 this.input.value = "";
+                this.setState({ output: 0 });
                 window.alert("Only numeric values are allowed!");
               } else {
                 etherAmount = 0;
