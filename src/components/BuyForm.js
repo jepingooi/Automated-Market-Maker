@@ -7,18 +7,19 @@ class BuyForm extends Component {
     super(props);
     this.state = {
       output: "0",
-      convertedRate: 0,
+      exchangeRate: 0,
     };
   }
 
   getTokenAmount = async (etherAmount) => {
+    // How much token to give
     const rate = await this.props.onEthChange(etherAmount);
     const convertedRate = rate / 1000000000000000000;
+
+    // 1 Eth = How much token
+    const exchangeRate = convertedRate / (etherAmount / 1000000000000000000);
     this.setState({
-      convertedRate,
-    });
-    this.setState({
-      // output: etherAmount * 100,
+      exchangeRate,
       output: convertedRate.toString(),
     });
   };
@@ -97,9 +98,14 @@ class BuyForm extends Component {
         </div>
         <div className="mb-5">
           <span className="float-left text-muted">Exchange Rate</span>
-          <span className="float-right text-muted">
-            1 ETH = {this.state.convertedRate}
-          </span>
+          {this.input && this.input.value.toString() !== "" && (
+            <span className="float-right text-muted">
+              1 ETH ={" "}
+              {this.input && this.input.value.toString() !== ""
+                ? `${this.state.exchangeRate} DApp`
+                : ""}
+            </span>
+          )}
         </div>
         <button type="submit" className="btn btn-primary btn-block btn-lg">
           SWAP!

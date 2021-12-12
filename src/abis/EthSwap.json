@@ -6120,86 +6120,14 @@
   },
   "networks": {
     "5777": {
-      "events": {
-        "0x6faf93231a456e552dbc9961f58d9713ee4f2e69d15f1975b050ef0911053a7b": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "token",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "rate",
-              "type": "uint256"
-            }
-          ],
-          "name": "TokensPurchased",
-          "type": "event"
-        },
-        "0x697c42d55a5e1fed3f464ec6f38b32546a0bd368dc8068b065c67566d73f3290": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "token",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "rate",
-              "type": "uint256"
-            }
-          ],
-          "name": "TokensSold",
-          "type": "event"
-        }
-      },
+      "events": {},
       "links": {},
-<<<<<<< HEAD
-      "address": "0x6e336a0f7E5E1AB2B8341BCC3bb7D9a2776440b2",
-      "transactionHash": "0x675e42fd73a574d166c196eba16f258c065feb7e875af198f83287669a7e0ca6"
+      "address": "0x0cEAf05B079D152ce02A9e1275D3914449c80C09",
+      "transactionHash": "0x27a2241e7bc8988c64092ad5fc8ef15faee632ac148790483d775bbf2b55dbde"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-12-12T06:32:10.124Z",
-=======
-      "address": "0x5F6D7569d4bBC1c1152C5B4f76366E3807B97ba9",
-      "transactionHash": "0x8962da563eb3890a0af687e9b8ab221825afc53ea848883063cb75135c45a411"
-    }
-  },
-  "schemaVersion": "3.4.3",
-  "updatedAt": "2021-12-11T07:24:18.892Z",
->>>>>>> b7db58574338f7e9af55f6afcb6cb4a86583e97c
+  "updatedAt": "2021-12-12T06:41:11.473Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

@@ -50,7 +50,6 @@ contract EthSwap {
   }
 
   function getRate(uint ethAmount) public view returns(uint) {
-     
      if(ethAmount != 0){
       uint tokenToRemain = k / (ethAmount + totalEth);
       uint tokenToGive = token.balanceOf(address(this)) - tokenToRemain;
