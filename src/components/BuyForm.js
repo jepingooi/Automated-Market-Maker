@@ -46,14 +46,15 @@ class BuyForm extends Component {
     return (
       <form
         className="mb-3"
-        onSubmit={(event) => {
-          event.preventDefault();
+        onSubmit={(e) => {
+          e.preventDefault();
           let etherAmount;
           etherAmount = this.input.value.toString();
           etherAmount = window.web3.utils.toWei(etherAmount, "Ether");
           this.props.buyTokens(etherAmount);
         }}
       >
+        {/* Input balance label */}
         <div>
           <label className="float-left">
             <b>Input</b>
@@ -62,10 +63,12 @@ class BuyForm extends Component {
             Balance: {this.getEthBalance()}
           </span>
         </div>
+
+        {/* Input field */}
         <div className="input-group mb-4">
           <input
             type="text"
-            onChange={(event) => {
+            onChange={(e) => {
               // const etherAmount = this.input.value.toString();
               let etherAmount;
               etherAmount = this.input.value.toString();
@@ -105,6 +108,8 @@ class BuyForm extends Component {
             </div>
           </div>
         </div>
+
+        {/* Output balance label */}
         <div>
           <label className="float-left">
             <b>Output</b>
@@ -113,6 +118,8 @@ class BuyForm extends Component {
             Balance: {this.getTokenBalance()}
           </span>
         </div>
+
+        {/* Output field */}
         <div className="input-group mb-2">
           <input
             type="text"
@@ -128,17 +135,25 @@ class BuyForm extends Component {
             </div>
           </div>
         </div>
+
+        {/* Current exchange rate label */}
         <div className="mb-5">
-          <span className="float-left text-muted">Exchange Rate</span>
-          {this.input && this.input.value.toString() !== "" && (
-            <span className="float-right text-muted">
-              1 ETH ={" "}
-              {this.input && this.input.value.toString() !== ""
-                ? `${this.state.exchangeRate} DApp`
-                : ""}
-            </span>
-          )}
+          {this.input &&
+            this.input.value.toString() !== "" &&
+            this.input.value > 0 && (
+              <>
+                <span className="float-left text-muted">Exchange Rate</span>
+                <span className="float-right text-muted">
+                  1 ETH ={" "}
+                  {this.input && this.input.value.toString() !== ""
+                    ? `${this.state.exchangeRate} DApp`
+                    : ""}
+                </span>
+              </>
+            )}
         </div>
+
+        {/* Swap button */}
         <button type="submit" className="btn btn-primary btn-block btn-lg">
           SWAP!
         </button>
