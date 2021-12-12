@@ -6185,12 +6185,21 @@
         }
       },
       "links": {},
+<<<<<<< HEAD
       "address": "0x6e336a0f7E5E1AB2B8341BCC3bb7D9a2776440b2",
       "transactionHash": "0x675e42fd73a574d166c196eba16f258c065feb7e875af198f83287669a7e0ca6"
     }
   },
   "schemaVersion": "3.4.3",
   "updatedAt": "2021-12-12T06:32:10.124Z",
+=======
+      "address": "0x5F6D7569d4bBC1c1152C5B4f76366E3807B97ba9",
+      "transactionHash": "0x8962da563eb3890a0af687e9b8ab221825afc53ea848883063cb75135c45a411"
+    }
+  },
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2021-12-11T07:24:18.892Z",
+>>>>>>> b7db58574338f7e9af55f6afcb6cb4a86583e97c
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}
