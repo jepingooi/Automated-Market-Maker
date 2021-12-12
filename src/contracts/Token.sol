@@ -17,7 +17,7 @@ contract Token {
         address indexed _spender,
         uint256 _value
     );
-
+    //how many token you have
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
 
@@ -25,6 +25,7 @@ contract Token {
         balanceOf[msg.sender] = totalSupply;
     }
 
+    //sending token to someone
     function transfer(address _to, uint256 _value) public returns (bool success) {
         require(balanceOf[msg.sender] >= _value);
         balanceOf[msg.sender] -= _value;
@@ -32,7 +33,7 @@ contract Token {
         emit Transfer(msg.sender, _to, _value);
         return true;
     }
-
+    //you know lets somebody else you know  spend your tokens
     function approve(address _spender, uint256 _value) public returns (bool success) {
         allowance[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
