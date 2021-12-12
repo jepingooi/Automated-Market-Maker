@@ -49,6 +49,17 @@ contract EthSwap {
     emit TokensPurchased(msg.sender, address(token), tokenToGive, rate, totalEth);
   }
 
+  function getRate(uint ethAmount) public view returns(uint) {
+     
+     if(ethAmount != 0){
+      uint tokenToRemain = k / (ethAmount + totalEth);
+      uint tokenToGive = token.balanceOf(address(this)) - tokenToRemain;
+      
+      return tokenToGive;
+     }
+    return 0;  
+  }  
+
   function sellTokens(uint _amount) public {
     // User can't sell more tokens than they have
     require(token.balanceOf(msg.sender) >= _amount);

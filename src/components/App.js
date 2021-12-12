@@ -85,6 +85,11 @@ class App extends Component {
       });
   };
 
+  handleEthChange = async (etherAmount) => {
+    const rate = await this.state.ethSwap.methods.getRate(etherAmount).call();
+    return rate;
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -113,6 +118,7 @@ class App extends Component {
           tokenBalance={this.state.tokenBalance}
           buyTokens={this.buyTokens}
           sellTokens={this.sellTokens}
+          onEthChange={this.handleEthChange}
         />
       );
     }

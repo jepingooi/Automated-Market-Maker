@@ -15,6 +15,7 @@ class Main extends Component {
     if (this.state.currentForm === "buy") {
       content = (
         <BuyForm
+          onEthChange={this.props.onEthChange}
           ethBalance={this.props.ethBalance}
           tokenBalance={this.props.tokenBalance}
           buyTokens={this.props.buyTokens}

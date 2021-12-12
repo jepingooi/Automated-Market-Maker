@@ -7,8 +7,21 @@ class BuyForm extends Component {
     super(props);
     this.state = {
       output: "0",
+      convertedRate: 0,
     };
   }
+
+  getTokenAmount = async (etherAmount) => {
+    const rate = await this.props.onEthChange(etherAmount);
+    const convertedRate = rate / 1000000000000000000;
+    this.setState({
+      convertedRate,
+    });
+    this.setState({
+      // output: etherAmount * 100,
+      output: convertedRate.toString(),
+    });
+  };
 
   render() {
     return (
@@ -34,10 +47,15 @@ class BuyForm extends Component {
           <input
             type="text"
             onChange={(event) => {
-              const etherAmount = this.input.value.toString();
-              this.setState({
-                output: etherAmount * 100,
-              });
+              // const etherAmount = this.input.value.toString();
+              let etherAmount;
+              etherAmount = this.input.value.toString();
+              if (etherAmount !== "") {
+                etherAmount = window.web3.utils.toWei(etherAmount, "Ether");
+              } else {
+                etherAmount = 0;
+              }
+              this.getTokenAmount(etherAmount);
             }}
             ref={(input) => {
               this.input = input;
@@ -58,7 +76,8 @@ class BuyForm extends Component {
             <b>Output</b>
           </label>
           <span className="float-right text-muted">
-            Balance: {window.web3.utils.fromWei(this.props.tokenBalance, "Ether")}
+            Balance:{" "}
+            {window.web3.utils.fromWei(this.props.tokenBalance, "Ether")}
           </span>
         </div>
         <div className="input-group mb-2">
@@ -78,7 +97,9 @@ class BuyForm extends Component {
         </div>
         <div className="mb-5">
           <span className="float-left text-muted">Exchange Rate</span>
-          <span className="float-right text-muted">1 ETH = 100 DApp</span>
+          <span className="float-right text-muted">
+            1 ETH = {this.state.convertedRate}
+          </span>
         </div>
         <button type="submit" className="btn btn-primary btn-block btn-lg">
           SWAP!
