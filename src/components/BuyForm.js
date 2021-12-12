@@ -17,10 +17,7 @@ class BuyForm extends Component {
     const convertedRate = rate / 1000000000000000000;
 
     // 1 Eth = How much token
-    const exchangeRate = (
-      convertedRate /
-      (etherAmount / 1000000000000000000)
-    ).toFixed(4);
+    const exchangeRate = (convertedRate / (etherAmount / 1000000000000000000)).toFixed(4);
     this.setState({
       exchangeRate,
       output: convertedRate.toString(),
@@ -41,34 +38,32 @@ class BuyForm extends Component {
     return (
       <form
         className="mb-3"
-        onSubmit={(event) => {
-          event.preventDefault();
+        onSubmit={(e) => {
+          e.preventDefault();
           let etherAmount;
           etherAmount = this.input.value.toString();
           etherAmount = window.web3.utils.toWei(etherAmount, "Ether");
           this.props.buyTokens(etherAmount);
         }}
       >
+        {/* Input balance label */}
         <div>
           <label className="float-left">
             <b>Input</b>
           </label>
-          <span className="float-right text-muted">
-            Balance: {this.getEthBalance()}
-          </span>
+          <span className="float-right text-muted">Balance: {this.getEthBalance()}</span>
         </div>
+
+        {/* Input field */}
         <div className="input-group mb-4">
           <input
             type="text"
-            onChange={(event) => {
+            onChange={(e) => {
               // const etherAmount = this.input.value.toString();
               let etherAmount;
               etherAmount = this.input.value.toString();
-              if (etherAmount !== "") {
-                etherAmount = window.web3.utils.toWei(etherAmount, "Ether");
-              } else {
-                etherAmount = 0;
-              }
+              if (etherAmount !== "") etherAmount = window.web3.utils.toWei(etherAmount, "Ether");
+              else etherAmount = 0;
               this.getTokenAmount(etherAmount);
             }}
             ref={(input) => {
@@ -85,14 +80,16 @@ class BuyForm extends Component {
             </div>
           </div>
         </div>
+
+        {/* Output balance label */}
         <div>
           <label className="float-left">
             <b>Output</b>
           </label>
-          <span className="float-right text-muted">
-            Balance: {this.getTokenBalance()}
-          </span>
+          <span className="float-right text-muted">Balance: {this.getTokenBalance()}</span>
         </div>
+
+        {/* Output field */}
         <div className="input-group mb-2">
           <input
             type="text"
@@ -108,17 +105,18 @@ class BuyForm extends Component {
             </div>
           </div>
         </div>
+
+        {/* Current exchange rate label */}
         <div className="mb-5">
           <span className="float-left text-muted">Exchange Rate</span>
           {this.input && this.input.value.toString() !== "" && (
             <span className="float-right text-muted">
-              1 ETH ={" "}
-              {this.input && this.input.value.toString() !== ""
-                ? `${this.state.exchangeRate} DApp`
-                : ""}
+              1 ETH = {this.input && this.input.value.toString() !== "" ? `${this.state.exchangeRate} DApp` : ""}
             </span>
           )}
         </div>
+
+        {/* Swap button */}
         <button type="submit" className="btn btn-primary btn-block btn-lg">
           SWAP!
         </button>

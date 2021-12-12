@@ -4,7 +4,6 @@ import Token from "../abis/Token.json";
 import EthSwap from "../abis/EthSwap.json";
 import Navbar from "./Navbar";
 import Main from "./Main";
-import "./App.css";
 
 class App extends Component {
   async componentWillMount() {
@@ -27,9 +26,7 @@ class App extends Component {
     if (tokenData) {
       const token = new web3.eth.Contract(Token.abi, tokenData.address);
       this.setState({ token });
-      let tokenBalance = await token.methods
-        .balanceOf(this.state.account)
-        .call();
+      let tokenBalance = await token.methods.balanceOf(this.state.account).call();
       this.setState({ tokenBalance: tokenBalance.toString() });
     } else {
       window.alert("Token contract not deployed to detected network.");
@@ -54,9 +51,7 @@ class App extends Component {
     } else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider);
     } else {
-      window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
+      window.alert("Non-Ethereum browser detected. You should consider trying MetaMask!");
     }
   }
 
@@ -103,16 +98,15 @@ class App extends Component {
     };
   }
 
-  render() {
-    let content;
-    if (this.state.loading) {
-      content = (
+  renderContent = () => {
+    if (this.state.loading)
+      return (
         <p id="loader" className="text-center">
           Loading...
         </p>
       );
-    } else {
-      content = (
+    else
+      return (
         <Main
           ethBalance={this.state.ethBalance}
           tokenBalance={this.state.tokenBalance}
@@ -121,19 +115,16 @@ class App extends Component {
           onEthChange={this.handleEthChange}
         />
       );
-    }
+  };
 
+  render() {
     return (
       <div>
         <Navbar account={this.state.account} />
         <div className="container-fluid mt-5">
           <div className="row">
-            <main
-              role="main"
-              className="col-lg-12 ml-auto mr-auto"
-              style={{ maxWidth: "600px" }}
-            >
-              <div className="content mr-auto ml-auto">{content}</div>
+            <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: "600px" }}>
+              <div className="content mr-auto ml-auto">{this.renderContent()}</div>
             </main>
           </div>
         </div>

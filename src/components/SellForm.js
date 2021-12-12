@@ -14,14 +14,15 @@ class SellForm extends Component {
     return (
       <form
         className="mb-3"
-        onSubmit={(event) => {
-          event.preventDefault();
+        onSubmit={(e) => {
+          e.preventDefault();
           let etherAmount;
           etherAmount = this.input.value.toString();
           etherAmount = window.web3.utils.toWei(etherAmount, "Ether");
           this.props.sellTokens(etherAmount);
         }}
       >
+        {/* Input balance label */}
         <div>
           <label className="float-left">
             <b>Input</b>
@@ -30,10 +31,12 @@ class SellForm extends Component {
             Balance: {window.web3.utils.fromWei(this.props.tokenBalance, "Ether")}
           </span>
         </div>
+
+        {/* Input field */}
         <div className="input-group mb-4">
           <input
             type="text"
-            onChange={(event) => {
+            onChange={(e) => {
               const tokenAmount = this.input.value.toString();
               this.setState({
                 output: tokenAmount / 100,
@@ -53,6 +56,8 @@ class SellForm extends Component {
             </div>
           </div>
         </div>
+
+        {/* Output balance label */}
         <div>
           <label className="float-left">
             <b>Output</b>
@@ -61,6 +66,8 @@ class SellForm extends Component {
             Balance: {window.web3.utils.fromWei(this.props.ethBalance, "Ether")}
           </span>
         </div>
+
+        {/* Output field */}
         <div className="input-group mb-2">
           <input
             type="text"
@@ -76,10 +83,14 @@ class SellForm extends Component {
             </div>
           </div>
         </div>
+
+        {/* Current exchange rate label */}
         <div className="mb-5">
           <span className="float-left text-muted">Exchange Rate</span>
           <span className="float-right text-muted">100 DApp = 1 ETH</span>
         </div>
+
+        {/* Swap button */}
         <button type="submit" className="btn btn-primary btn-block btn-lg">
           SWAP!
         </button>
