@@ -17,11 +17,24 @@ class BuyForm extends Component {
     const convertedRate = rate / 1000000000000000000;
 
     // 1 Eth = How much token
-    const exchangeRate = convertedRate / (etherAmount / 1000000000000000000);
+    const exchangeRate = (
+      convertedRate /
+      (etherAmount / 1000000000000000000)
+    ).toFixed(4);
     this.setState({
       exchangeRate,
       output: convertedRate.toString(),
     });
+  };
+
+  getTokenBalance = () => {
+    const balance = window.web3.utils.fromWei(this.props.tokenBalance, "Ether");
+    return parseFloat(balance).toFixed(4);
+  };
+
+  getEthBalance = () => {
+    const balance = window.web3.utils.fromWei(this.props.ethBalance, "Ether");
+    return parseFloat(balance).toFixed(4);
   };
 
   render() {
@@ -41,7 +54,7 @@ class BuyForm extends Component {
             <b>Input</b>
           </label>
           <span className="float-right text-muted">
-            Balance: {window.web3.utils.fromWei(this.props.ethBalance, "Ether")}
+            Balance: {this.getEthBalance()}
           </span>
         </div>
         <div className="input-group mb-4">
@@ -77,8 +90,7 @@ class BuyForm extends Component {
             <b>Output</b>
           </label>
           <span className="float-right text-muted">
-            Balance:{" "}
-            {window.web3.utils.fromWei(this.props.tokenBalance, "Ether")}
+            Balance: {this.getTokenBalance()}
           </span>
         </div>
         <div className="input-group mb-2">
