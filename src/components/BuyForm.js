@@ -108,11 +108,13 @@ class BuyForm extends Component {
 
         {/* Current exchange rate label */}
         <div className="mb-5">
-          <span className="float-left text-muted">Exchange Rate</span>
-          {this.input && this.input.value.toString() !== "" && (
-            <span className="float-right text-muted">
-              1 ETH = {this.input && this.input.value.toString() !== "" ? `${this.state.exchangeRate} DApp` : ""}
-            </span>
+          {this.input && this.input.value.toString() !== "" && this.input.value > 0 && (
+            <>
+              <span className="float-left text-muted">Exchange Rate</span>
+              <span className="float-right text-muted">
+                1 ETH = {this.input && this.input.value.toString() !== "" ? `${this.state.exchangeRate} DApp` : ""}
+              </span>
+            </>
           )}
         </div>
 
