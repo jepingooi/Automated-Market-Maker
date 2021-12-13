@@ -26,7 +26,9 @@ class App extends Component {
     if (tokenData) {
       const token = new web3.eth.Contract(Token.abi, tokenData.address);
       this.setState({ token });
-      let tokenBalance = await token.methods.balanceOf(this.state.account).call();
+      let tokenBalance = await token.methods
+        .balanceOf(this.state.account)
+        .call();
       this.setState({ tokenBalance: tokenBalance.toString() });
     } else {
       window.alert("Token contract not deployed to detected network.");
@@ -51,18 +53,24 @@ class App extends Component {
     } else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider);
     } else {
-      window.alert("Non-Ethereum browser detected. You should consider trying MetaMask!");
+      window.alert(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
     }
   }
 
-  buyTokens = (etherAmount) => {
+  buyTokens = async (etherAmount) => {
     this.setState({ loading: true });
-    this.state.ethSwap.methods
-      .buyTokens()
-      .send({ value: etherAmount, from: this.state.account })
-      .on("transactionHash", (hash) => {
-        this.setState({ loading: false });
-      });
+    try {
+      await this.state.ethSwap.methods
+        .buyTokens()
+        .send({ value: etherAmount, from: this.state.account })
+        .on("transactionHash", (hash) => {
+          this.setState({ loading: false });
+        });
+    } catch (e) {
+      window.alert("You have reached your daily limit!");
+    }
   };
 
   sellTokens = (tokenAmount) => {
@@ -123,8 +131,14 @@ class App extends Component {
         <Navbar account={this.state.account} />
         <div className="container-fluid mt-5">
           <div className="row">
-            <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: "600px" }}>
-              <div className="content mr-auto ml-auto">{this.renderContent()}</div>
+            <main
+              role="main"
+              className="col-lg-12 ml-auto mr-auto"
+              style={{ maxWidth: "600px" }}
+            >
+              <div className="content mr-auto ml-auto">
+                {this.renderContent()}
+              </div>
             </main>
           </div>
         </div>

@@ -44,25 +44,21 @@ contract("EthSwap", ([deployer, investor]) => {
 
     before(async () => {
       // Purchase tokens before each example
-      result = await ethSwap.buyTokens({
+      await ethSwap.buyTokens({
         from: investor,
         value: web3.utils.toWei("50", "ether"),
       });
+      await ethSwap.buyTokens({
+        from: investor,
+        value: web3.utils.toWei("40", "ether"),
+      });
+      result = await ethSwap.buyTokens({
+        from: investor,
+        value: web3.utils.toWei("1", "ether"),
+      });
     });
 
-    it("Allows user to instantly purchase tokens from ethSwap for a fixed price", async () => {
-      // Check investor token balance after purchase
-      // let investorBalance = await token.balanceOf(investor);
-      // assert.equal(investorBalance.toString(), tokens("100"));
-
-      // // Check ethSwap balance after purchase
-      // let ethSwapBalance;
-      // ethSwapBalance = await token.balanceOf(ethSwap.address);
-      // assert.equal(ethSwapBalance.toString(), tokens("900"));
-      // // Check ethSwap ethereum balance after purchase
-      // ethSwapBalance = await web3.eth.getBalance(ethSwap.address);
-      // assert.equal(ethSwapBalance.toString(), web3.utils.toWei("1", "Ether"));
-
+    it("Allows user to instantly purchase tokens from ethSwap", async () => {
       // Check logs to ensure event was emitted with correct data
       const event = result.logs[0].args;
       const k = await ethSwap.k();
@@ -71,13 +67,9 @@ contract("EthSwap", ([deployer, investor]) => {
       const tokenToGive =
         (await token.balanceOf(ethSwap.address)) - tokenToRemain;
 
-      console.log(tokenToRemain.toString());
-      console.log(tokenToGive.toString());
-      // assert.equal(event.account, investor);
-      // assert.equal(event.token, token.address);
-      // assert.equal(event.amount.toString(), tokens("100").toString());
-      // assert.equal(event.rate.toString(), "100");
-      // assert.equal(event.totalEth.toString(), tokens("1001").toString());
+      console.log(event.amount.toString());
+      console.log(event.lastPurchaseTime.toString());
+      console.log(event.amountBought.toString());
     });
   });
 

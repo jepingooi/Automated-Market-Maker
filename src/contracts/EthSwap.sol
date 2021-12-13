@@ -9,12 +9,21 @@ contract EthSwap {
   uint public totalEth = 1000000000000000000000;
   uint constant public k = 1000000000000000000000 ** 2;
 
+  struct Buyer {
+    uint amountBought;
+    uint lastPurchaseTime;
+  }
+
+  mapping(address => Buyer) buyers;
+
   event TokensPurchased(
     address account,
     address token,
     uint amount,
     uint rate,
-    uint totalEth
+    uint totalEth,
+    uint lastPurchaseTime,
+    uint amountBought
   );
 
   event TokensSold(
@@ -28,7 +37,16 @@ contract EthSwap {
     token = _token;
   }
 
-  function buyTokens() public payable {
+  function buyTokens() public payable{
+    // If buyer has bought 90 tokens
+    if (buyers[msg.sender].amountBought >= 90 && now < (buyers[msg.sender].lastPurchaseTime + 1 days)) revert("You have reached your daily limit!");
+    else if (now >= (buyers[msg.sender].lastPurchaseTime + 1 days)) {
+      // If 1 day has passed, reset the user's amountBought
+      buyers[msg.sender].amountBought = 0; 
+    } 
+
+    require(buyers[msg.sender].amountBought < 90  && (buyers[msg.sender].amountBought + msg.value /1000000000000000000) <= 90, "Input exceeds your daily limit!");
+ 
     // Increase ethereum amount from liquidity pool
     totalEth += msg.value;
 
@@ -43,10 +61,14 @@ contract EthSwap {
 
     // Transfer tokens to the user
     token.transfer(msg.sender, tokenToGive);
+  
+    buyers[msg.sender].lastPurchaseTime = now;
+    buyers[msg.sender].amountBought += msg.value/ 1000000000000000000;    
 
-    
     // Emit an event
-    emit TokensPurchased(msg.sender, address(token), tokenToGive, rate, totalEth);
+    emit TokensPurchased(msg.sender, address(token), tokenToGive, rate, totalEth, buyers[msg.sender].lastPurchaseTime, buyers[msg.sender].amountBought);
+    
+  
   }
 
   function getRate(uint ethAmount) public view returns(uint) {

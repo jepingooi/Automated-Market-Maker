@@ -81,6 +81,10 @@ class BuyForm extends Component {
                 window.alert(
                   `Input cannot exceed your account balance! (${this.getEthBalance()})`
                 );
+              } else if (parseInt(this.input.value.toString()) > 90) {
+                this.input.value = "";
+                this.setState({ output: 0 });
+                window.alert("You cannot purchase more than 90 tokens!");
               } else if (
                 etherAmount !== "" &&
                 this.isNumeric(etherAmount) !== false
