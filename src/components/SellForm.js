@@ -22,7 +22,7 @@ class SellForm extends Component {
     ).toFixed(4);
     this.setState({
       exchangeRate,
-      output: convertedRate.toString(),
+      output: parseFloat(convertedRate.toString()).toFixed(4),
     });
   };
 
