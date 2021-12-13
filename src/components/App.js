@@ -110,6 +110,13 @@ class App extends Component {
     return rate;
   };
 
+  handleTokenChange = async (tokenAmount) => {
+    const rate = await this.state.ethSwap.methods
+      .getEthRate(tokenAmount)
+      .call();
+    return rate;
+  };
+
   renderContent = () => {
     if (this.state.loading)
       return (
@@ -125,6 +132,7 @@ class App extends Component {
           buyTokens={this.buyTokens}
           sellTokens={this.sellTokens}
           onEthChange={this.handleEthChange}
+          onTokenChange={this.handleTokenChange}
         />
       );
   };

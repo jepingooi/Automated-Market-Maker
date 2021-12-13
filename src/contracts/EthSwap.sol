@@ -77,25 +77,37 @@ contract EthSwap {
     return 0;  
   }  
 
-  // function sellTokens(uint _amount) public {
-  //   // User can't sell more tokens than they have
-  //   require(token.balanceOf(msg.sender) >= _amount);
+  function getEthRate(uint tokenAmount) public view returns(uint) {
+    if(tokenAmount != 0){
+    uint ethToRemain = k / (tokenAmount + token.balanceOf(address(this)));
+    uint ethToGive = totalEth - ethToRemain;
+    
+    return ethToGive;
+    }
+    return 0;  
+  }  
 
-  //   // Calculate the amount of Ether to redeem
-  //   uint etherAmount = _amount / rate;
+  function sellTokens(uint _amount) public {
+    token.transferFrom(msg.sender, address(this), _amount);
 
-  //   // Require that EthSwap has enough Ether
-  //   require(address(this).balance >= etherAmount);
+    // Calculate the number of tokens to buy
+    uint ethToRemain = k / token.balanceOf(address(this));
+    uint ethToGive = totalEth - ethToRemain;
 
-  //   // Perform sale
-  //   token.transferFrom(msg.sender, address(this), _amount);
-  //   msg.sender.transfer(etherAmount);
+    // User cannot sell more token than they have
+    require(token.balanceOf(msg.sender) >= _amount);
 
-  //    // Decrease ethereum amount from liquidity pool
-  //   totalEth -= etherAmount;
+    // Require that EthSwap has enough Ether
+    require(totalEth >= ethToGive);
 
-  //   // Emit an event
-  //   emit TokensSold(msg.sender, address(token), _amount, rate);
-  // }
+    // Perform sale
+    msg.sender.transfer(ethToGive);
+
+    // Decrease ethereum amount from liquidity pool
+    totalEth -= ethToGive;
+
+    // Emit an event
+    emit TokensSold(msg.sender, address(token), _amount, rate);
+  }
 
 }

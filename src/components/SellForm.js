@@ -10,16 +10,49 @@ class SellForm extends Component {
     };
   }
 
+  getEthAmount = async (tokenAmount) => {
+    // How much token to give
+    const rate = await this.props.onTokenChange(tokenAmount);
+    const convertedRate = rate / 1000000000000000000;
+
+    // 1 Token = How much Eth
+    const exchangeRate = (
+      convertedRate /
+      (tokenAmount / 1000000000000000000)
+    ).toFixed(4);
+    this.setState({
+      exchangeRate,
+      output: convertedRate.toString(),
+    });
+  };
+
+  // Get user's token balance
+  getTokenBalance = () => {
+    const balance = window.web3.utils.fromWei(this.props.tokenBalance, "Ether");
+    return parseFloat(balance).toFixed(4);
+  };
+
+  // Get user's eth balance
+  getEthBalance = () => {
+    const balance = window.web3.utils.fromWei(this.props.ethBalance, "Ether");
+    return parseFloat(balance).toFixed(4);
+  };
+
+  isNumeric = (str) => {
+    if (typeof str != "string") return false;
+    return !isNaN(str) && !isNaN(parseFloat(str));
+  };
+
   render() {
     return (
       <form
         className="mb-3"
         onSubmit={(e) => {
           e.preventDefault();
-          let etherAmount;
-          etherAmount = this.input.value.toString();
-          etherAmount = window.web3.utils.toWei(etherAmount, "Ether");
-          this.props.sellTokens(etherAmount);
+          let tokenAmount;
+          tokenAmount = this.input.value.toString();
+          tokenAmount = window.web3.utils.toWei(tokenAmount, "Ether");
+          this.props.sellTokens(tokenAmount);
         }}
       >
         {/* Input balance label */}
@@ -28,8 +61,7 @@ class SellForm extends Component {
             <b>Input</b>
           </label>
           <span className="float-right text-muted">
-            Balance:{" "}
-            {window.web3.utils.fromWei(this.props.tokenBalance, "Ether")}
+            Balance: {this.getTokenBalance()}
           </span>
         </div>
 
@@ -38,10 +70,37 @@ class SellForm extends Component {
           <input
             type="text"
             onChange={(e) => {
-              const tokenAmount = this.input.value.toString();
-              this.setState({
-                output: tokenAmount / 100,
-              });
+              // const etherAmount = this.input.value.toString();
+              let tokenAmount;
+              tokenAmount = this.input.value.toString();
+
+              if (tokenAmount > parseFloat(this.getTokenBalance())) {
+                this.input.value = "";
+                this.setState({ output: 0 });
+                window.alert(
+                  `Input cannot exceed your account balance! (${this.getEthBalance()})`
+                );
+              } else if (parseInt(this.input.value.toString()) > 90) {
+                this.input.value = "";
+                this.setState({ output: 0 });
+                window.alert("You cannot purchase more than 90 tokens!");
+              } else if (
+                tokenAmount !== "" &&
+                this.isNumeric(tokenAmount) !== false
+              ) {
+                tokenAmount = window.web3.utils.toWei(tokenAmount, "Ether");
+                this.getEthAmount(tokenAmount);
+              } else if (
+                tokenAmount !== "" &&
+                this.isNumeric(tokenAmount) === false
+              ) {
+                this.input.value = "";
+                this.setState({ output: 0 });
+                window.alert("Only numeric values are allowed!");
+              } else {
+                tokenAmount = 0;
+                this.getEthAmount(tokenAmount);
+              }
             }}
             ref={(input) => {
               this.input = input;
@@ -64,7 +123,7 @@ class SellForm extends Component {
             <b>Output</b>
           </label>
           <span className="float-right text-muted">
-            Balance: {window.web3.utils.fromWei(this.props.ethBalance, "Ether")}
+            Balance: {this.getEthBalance()}
           </span>
         </div>
 
@@ -87,8 +146,19 @@ class SellForm extends Component {
 
         {/* Current exchange rate label */}
         <div className="mb-5">
-          <span className="float-left text-muted">Exchange Rate</span>
-          <span className="float-right text-muted">100 GNN = 1 ETH</span>
+          {this.input &&
+            this.input.value.toString() !== "" &&
+            this.input.value > 0 && (
+              <>
+                <span className="float-left text-muted">Exchange Rate</span>
+                <span className="float-right text-muted">
+                  1 GNN ={" "}
+                  {this.input && this.input.value.toString() !== ""
+                    ? `${this.state.exchangeRate} ETH`
+                    : ""}
+                </span>
+              </>
+            )}
         </div>
 
         {/* Swap button */}

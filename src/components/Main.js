@@ -20,20 +20,21 @@ class Main extends Component {
           buyTokens={this.props.buyTokens}
         />
       );
-    // else
-    //   return (
-    //     <SellForm
-    //       ethBalance={this.props.ethBalance}
-    //       tokenBalance={this.props.tokenBalance}
-    //       sellTokens={this.props.sellTokens}
-    //     />
-    //   );
+    else
+      return (
+        <SellForm
+          onTokenChange={this.props.onTokenChange}
+          ethBalance={this.props.ethBalance}
+          tokenBalance={this.props.tokenBalance}
+          sellTokens={this.props.sellTokens}
+        />
+      );
   };
 
   render() {
     return (
       <div id="content" className="mt-5">
-        {/* <div className="d-flex justify-content-between mb-3">
+        <div className="d-flex justify-content-between mb-3">
           <button
             className="btn btn-light"
             onClick={(e) => this.setState({ currentForm: "buy" })}
@@ -47,7 +48,7 @@ class Main extends Component {
           >
             Sell
           </button>
-        </div> */}
+        </div>
 
         <div className="card mb-4">
           <div className="card-body">{this.renderContent()}</div>
