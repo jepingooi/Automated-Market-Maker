@@ -1,8 +1,8 @@
 pragma solidity ^0.5.0;
 
 contract Token {
-    string  public name = "Bitcoin";
-    string  public symbol = "BTC";
+    string  public name = "GNN Token";
+    string  public symbol = "GNN";
     uint256 public totalSupply = 1000000000000000000000; // 1 million tokens
     uint8   public decimals = 18;
 

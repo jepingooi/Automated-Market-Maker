@@ -28,7 +28,8 @@ class SellForm extends Component {
             <b>Input</b>
           </label>
           <span className="float-right text-muted">
-            Balance: {window.web3.utils.fromWei(this.props.tokenBalance, "Ether")}
+            Balance:{" "}
+            {window.web3.utils.fromWei(this.props.tokenBalance, "Ether")}
           </span>
         </div>
 
@@ -52,7 +53,7 @@ class SellForm extends Component {
           <div className="input-group-append">
             <div className="input-group-text">
               <img src={tokenLogo} height="32" alt="" />
-              &nbsp; DApp
+              &nbsp; GNN
             </div>
           </div>
         </div>
@@ -87,7 +88,7 @@ class SellForm extends Component {
         {/* Current exchange rate label */}
         <div className="mb-5">
           <span className="float-left text-muted">Exchange Rate</span>
-          <span className="float-right text-muted">100 DApp = 1 ETH</span>
+          <span className="float-right text-muted">100 GNN = 1 ETH</span>
         </div>
 
         {/* Swap button */}

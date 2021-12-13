@@ -20,28 +20,34 @@ class Main extends Component {
           buyTokens={this.props.buyTokens}
         />
       );
-    else
-      return (
-        <SellForm
-          ethBalance={this.props.ethBalance}
-          tokenBalance={this.props.tokenBalance}
-          sellTokens={this.props.sellTokens}
-        />
-      );
+    // else
+    //   return (
+    //     <SellForm
+    //       ethBalance={this.props.ethBalance}
+    //       tokenBalance={this.props.tokenBalance}
+    //       sellTokens={this.props.sellTokens}
+    //     />
+    //   );
   };
 
   render() {
     return (
-      <div id="content" className="mt-3">
-        <div className="d-flex justify-content-between mb-3">
-          <button className="btn btn-light" onClick={(e) => this.setState({ currentForm: "buy" })}>
+      <div id="content" className="mt-5">
+        {/* <div className="d-flex justify-content-between mb-3">
+          <button
+            className="btn btn-light"
+            onClick={(e) => this.setState({ currentForm: "buy" })}
+          >
             Buy
           </button>
           <span className="text-muted">&lt; {this.state.currentForm} &gt;</span>
-          <button className="btn btn-light" onClick={(e) => this.setState({ currentForm: "sell" })}>
+          <button
+            className="btn btn-light"
+            onClick={(e) => this.setState({ currentForm: "sell" })}
+          >
             Sell
           </button>
-        </div>
+        </div> */}
 
         <div className="card mb-4">
           <div className="card-body">{this.renderContent()}</div>

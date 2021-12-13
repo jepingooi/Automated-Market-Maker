@@ -140,7 +140,7 @@ class BuyForm extends Component {
           <div className="input-group-append">
             <div className="input-group-text">
               <img src={tokenLogo} height="32" alt="" />
-              &nbsp; DApp
+              &nbsp; GNN
             </div>
           </div>
         </div>
@@ -155,7 +155,7 @@ class BuyForm extends Component {
                 <span className="float-right text-muted">
                   1 ETH ={" "}
                   {this.input && this.input.value.toString() !== ""
-                    ? `${this.state.exchangeRate} DApp`
+                    ? `${this.state.exchangeRate} GNN`
                     : ""}
                 </span>
               </>

@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 import "./Token.sol";
 
 contract EthSwap {
-  string public name = "EthSwap Instant Exchange";
+  string public name = "Automated Market Maker";
   Token public token;
   uint public rate;
   uint public totalEth = 1000000000000000000000;
@@ -38,10 +38,10 @@ contract EthSwap {
   }
 
   function buyTokens() public payable{
-    // If buyer has bought 90 tokens
+    // If buyer has bought 90 tokens today, revert the transaction
     if (buyers[msg.sender].amountBought >= 90 && now < (buyers[msg.sender].lastPurchaseTime + 1 days)) revert("You have reached your daily limit!");
     else if (now >= (buyers[msg.sender].lastPurchaseTime + 1 days)) {
-      // If 1 day has passed, reset the user's amountBought
+      // If 1 day has past, reset the user's amountBought
       buyers[msg.sender].amountBought = 0; 
     } 
 
@@ -51,12 +51,10 @@ contract EthSwap {
     totalEth += msg.value;
 
     // Calculate the number of tokens to buy
-    // uint tokenAmount = msg.value * rate;
     uint tokenToRemain = k / totalEth;
     uint tokenToGive = token.balanceOf(address(this)) - tokenToRemain;
 
     // Require that EthSwap has enough tokens
-    // require(token.balanceOf(address(this)) >= tokenAmount);
     require(token.balanceOf(address(this)) >= tokenToGive);
 
     // Transfer tokens to the user
@@ -67,8 +65,6 @@ contract EthSwap {
 
     // Emit an event
     emit TokensPurchased(msg.sender, address(token), tokenToGive, rate, totalEth, buyers[msg.sender].lastPurchaseTime, buyers[msg.sender].amountBought);
-    
-  
   }
 
   function getRate(uint ethAmount) public view returns(uint) {
@@ -81,25 +77,25 @@ contract EthSwap {
     return 0;  
   }  
 
-  function sellTokens(uint _amount) public {
-    // User can't sell more tokens than they have
-    require(token.balanceOf(msg.sender) >= _amount);
+  // function sellTokens(uint _amount) public {
+  //   // User can't sell more tokens than they have
+  //   require(token.balanceOf(msg.sender) >= _amount);
 
-    // Calculate the amount of Ether to redeem
-    uint etherAmount = _amount / rate;
+  //   // Calculate the amount of Ether to redeem
+  //   uint etherAmount = _amount / rate;
 
-    // Require that EthSwap has enough Ether
-    require(address(this).balance >= etherAmount);
+  //   // Require that EthSwap has enough Ether
+  //   require(address(this).balance >= etherAmount);
 
-    // Perform sale
-    token.transferFrom(msg.sender, address(this), _amount);
-    msg.sender.transfer(etherAmount);
+  //   // Perform sale
+  //   token.transferFrom(msg.sender, address(this), _amount);
+  //   msg.sender.transfer(etherAmount);
 
-     // Decrease ethereum amount from liquidity pool
-    totalEth -= etherAmount;
+  //    // Decrease ethereum amount from liquidity pool
+  //   totalEth -= etherAmount;
 
-    // Emit an event
-    emit TokensSold(msg.sender, address(token), _amount, rate);
-  }
+  //   // Emit an event
+  //   emit TokensSold(msg.sender, address(token), _amount, rate);
+  // }
 
 }
