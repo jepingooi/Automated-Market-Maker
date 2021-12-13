@@ -6,6 +6,19 @@ import Navbar from "./Navbar";
 import Main from "./Main";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      account: "",
+      token: {},
+      ethSwap: {},
+      ethBalance: "0",
+      tokenBalance: "0",
+      loading: true,
+      tokenToGive: 0,
+    };
+  }
+
   async componentWillMount() {
     await this.loadWeb3();
     await this.loadBlockchainData();
@@ -19,6 +32,10 @@ class App extends Component {
 
     const ethBalance = await web3.eth.getBalance(this.state.account);
     this.setState({ ethBalance });
+
+    if (this.state.ethBalance / 1000000000000000000 < 20) {
+      window.alert("Your account must have a minimum balance of 20 eth!");
+    }
 
     // Load Token
     const networkId = await web3.eth.net.getId();
@@ -93,19 +110,6 @@ class App extends Component {
     return rate;
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      account: "",
-      token: {},
-      ethSwap: {},
-      ethBalance: "0",
-      tokenBalance: "0",
-      loading: true,
-      tokenToGive: 0,
-    };
-  }
-
   renderContent = () => {
     if (this.state.loading)
       return (
@@ -126,24 +130,39 @@ class App extends Component {
   };
 
   render() {
-    return (
-      <div>
-        <Navbar account={this.state.account} />
-        <div className="container-fluid mt-5">
-          <div className="row">
-            <main
-              role="main"
-              className="col-lg-12 ml-auto mr-auto"
-              style={{ maxWidth: "600px" }}
-            >
-              <div className="content mr-auto ml-auto">
-                {this.renderContent()}
-              </div>
-            </main>
+    if (this.state.ethBalance / 1000000000000000000 >= 20) {
+      return (
+        <div>
+          <Navbar account={this.state.account} />
+          <div className="container-fluid mt-5">
+            <div className="row">
+              <main
+                role="main"
+                className="col-lg-12 ml-auto mr-auto"
+                style={{ maxWidth: "600px" }}
+              >
+                <div className="content mr-auto ml-auto">
+                  {this.renderContent()}
+                </div>
+              </main>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div>
+          <Navbar account={this.state.account} />
+          <div className="container-fluid mt-5">
+            <div className="row align-items-center">
+              <div className="col mt-5">
+                <h1 className="text-center">Invalid Account</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
